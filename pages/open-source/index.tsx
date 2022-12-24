@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Header from "../../components/header";
 import { Article, Main } from "../../components";
-import projects from "./data";
+import projects from "../../_data/open-source";
 import styled from "styled-components";
 import { HOVER_BG } from "../../lib/colors";
 

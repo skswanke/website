@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Header from "../../components/header";
 import { Article, Main } from "../../components";
-import jobs from "./data";
+import jobs from "../../_data/experience";
 import JobTitle from "../../components/job-title";
 import styled from "styled-components";
 
