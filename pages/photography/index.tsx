@@ -4,6 +4,7 @@ import { ExifData } from "exif";
 import { Article, H1, Main } from "../../components";
 import Header from "../../components/header";
 import { getPhotos } from "../../lib/api";
+import Image from "next/image";
 
 const Grid = styled.div`
   display: grid;
@@ -19,7 +20,7 @@ const Grid = styled.div`
     grid-template-columns: 1fr;
   }
 `;
-const Img = styled.img`
+const Img = styled(Image)`
   object-fit: contain;
   max-width: 100%;
   max-height: 100%;
@@ -93,7 +94,11 @@ export default function Photography({ allPhotos }: Props) {
               <A key={photo.slug} href={`/images/photographs/${photo.slug}`}>
                 <ImgContainer>
                   <ImgPosition>
-                    <Img src={`/images/photographs/${photo.slug}`} />
+                    <Img
+                      src={`/images/photographs/${photo.slug}`}
+                      height={photo.exif.exif.ExifImageHeight || 500}
+                      width={photo.exif.exif.ExifImageWidth || 500}
+                    />
                   </ImgPosition>
                   {photo.exif.exif.CreateDate && (
                     <ExifText>
