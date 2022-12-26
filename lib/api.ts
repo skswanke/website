@@ -1,9 +1,59 @@
 import fs from "fs";
 import { join } from "path";
 import matter from "gray-matter";
+import { ExifData } from "exif";
 import { getExifPromise } from "./exif";
+import { exifDateToDate } from "./utils";
 
 const photosDirectory = join(process.cwd(), "public/images/photographs");
+
+const getDecimalDegrees = (
+  nwse: string,
+  deg: number,
+  min: number,
+  sec: number
+) => {
+  const degRel = deg + min / 60 + sec / 3600;
+  if (nwse === "S" || nwse === "W") {
+    return -degRel;
+  }
+  return degRel;
+};
+
+const geocodePhoto = async (exif: ExifData): Promise<string> => {
+  const { gps } = exif;
+  if (!gps) {
+    return "";
+  }
+  const { GPSLatitude, GPSLatitudeRef, GPSLongitude, GPSLongitudeRef } = gps;
+  if (!GPSLatitude || !GPSLatitudeRef || !GPSLongitude || !GPSLongitudeRef) {
+    return "";
+  }
+  const lat = getDecimalDegrees(
+    GPSLatitudeRef,
+    GPSLatitude[0],
+    GPSLatitude[1],
+    GPSLatitude[2]
+  );
+  const long = getDecimalDegrees(
+    GPSLongitudeRef,
+    GPSLongitude[0],
+    GPSLongitude[1],
+    GPSLongitude[2]
+  );
+  console.log({ lat, long });
+
+  const gpsResponse = await fetch(
+    `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${long}`
+  );
+
+  const gpsData = await gpsResponse.json();
+  console.log(gpsData);
+
+  const address = [gpsData?.address?.city, gpsData?.address?.country];
+
+  return address.join(", ");
+};
 
 export async function getPhotos() {
   const slugs = fs.readdirSync(photosDirectory);
@@ -13,12 +63,28 @@ export async function getPhotos() {
       const exif = await getExifPromise(path).catch(() => ({
         exif: { CreateDate: null },
       }));
+
+      if (exif.exif.CreateDate) {
+        const location = await geocodePhoto(exif as ExifData);
+        return { slug, exif: JSON.parse(JSON.stringify(exif)), location };
+      }
+
       return { slug, exif: JSON.parse(JSON.stringify(exif)) };
     })
   );
-  return photos.sort((a, b) =>
-    a.exif.exif.CreateDate || "" > (b.exif.exif.CreateDate || "") ? -1 : 1
-  );
+  return photos.sort((a, b) => {
+    if (!a || !a.exif.exif.CreateDate) {
+      return 1;
+    }
+    if (!b || !b.exif.exif.CreateDate) {
+      return -1;
+    }
+
+    const aDate = exifDateToDate(a.exif.exif.CreateDate);
+    const bDate = exifDateToDate(b.exif.exif.CreateDate);
+
+    return aDate > bDate ? -1 : 1;
+  });
 }
 
 const postsDirectory = join(process.cwd(), "_posts");

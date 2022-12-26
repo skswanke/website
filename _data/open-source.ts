@@ -21,7 +21,7 @@ const data = [
   },
   {
     title: "Prufer Code Labeled Tree Generator",
-    link: "https://github.com/skswanke/pruferdecode" ,
+    link: "https://github.com/skswanke/pruferdecode",
     src: "d3.png",
   },
   {

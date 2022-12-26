@@ -4,7 +4,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prettier": "prettier --write _data/* _posts/* components/* icons/* lib/* pages/*"
   },
   "dependencies": {
     "date-fns": "^2.29.3",

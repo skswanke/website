@@ -17,7 +17,7 @@ export default function Home() {
       <Header />
       <Main>
         <Article>
-            <h2>Developer at large</h2>
+          <h2>Developer at large</h2>
         </Article>
       </Main>
     </>

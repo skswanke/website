@@ -1,7 +1,7 @@
 ---
 title: "Atomic Versioned Deploys in S3"
 date: "2019-10-03T12:00:00.000Z"
-excerpt: "In this post I'm going to break down some of the problems we've had, and the strategy we made for setting up a CI/CD managed, versioned deploy system for static sites in AWS using S3 and CloudFront." 
+excerpt: "In this post I'm going to break down some of the problems we've had, and the strategy we made for setting up a CI/CD managed, versioned deploy system for static sites in AWS using S3 and CloudFront."
 ---
 
 ![Solution Diagram](/images/blog/s3-atomic-deploys/solution.png)

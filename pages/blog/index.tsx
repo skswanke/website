@@ -7,7 +7,7 @@ import { getAllPosts } from "../../lib/api";
 import { Post } from "../../lib/types";
 import Header from "../../components/header";
 import { H3, Main } from "../../components";
-import { HOVER_BG, SECONDARY_TEXT } from "../../lib/colors";
+import { SECONDARY_TEXT } from "../../lib/colors";
 
 const UL = styled.ul`
   padding: 0;
@@ -34,7 +34,7 @@ const Time = styled.time`
   color: ${SECONDARY_TEXT};
 `;
 export const P = styled.p`
-margin: 8px 0;
+  margin: 8px 0;
 `;
 
 interface Props {

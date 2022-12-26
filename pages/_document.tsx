@@ -19,7 +19,7 @@ class MyDocument extends Document {
             type="font/ttf"
             crossOrigin="anonymous"
           />
-        <link rel="icon" href="/icon.png" />
+          <link rel="icon" href="/icon.png" />
         </Head>
         <body>
           <Main />

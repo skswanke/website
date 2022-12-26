@@ -1,10 +1,11 @@
 import Head from "next/head";
+import Image from "next/image";
 import styled from "styled-components";
 import { ExifData } from "exif";
 import { Article, H1, Main } from "../../components";
 import Header from "../../components/header";
 import { getPhotos } from "../../lib/api";
-import Image from "next/image";
+import { exifText, topText } from "../../lib/utils";
 
 const Grid = styled.div`
   display: grid;
@@ -34,6 +35,16 @@ const ExifText = styled.small`
   width: 100%;
   transition: transform 200ms ease-in-out;
 `;
+const TopText = styled.small`
+  background-color: #ffffff;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateY(-30px);
+  width: 100%;
+  transition: transform 200ms ease-in-out;
+  z-index: 1;
+`;
 const ImgContainer = styled.div`
   position: relative;
   width: 100%;
@@ -41,6 +52,9 @@ const ImgContainer = styled.div`
   overflow: hidden;
   :hover {
     ${ExifText} {
+      transform: none;
+    }
+    ${TopText} {
       transform: none;
     }
   }
@@ -68,14 +82,14 @@ const A = styled.a`
 `;
 
 interface Props {
-  allPhotos: { slug: string; exif: ExifData }[];
+  allPhotos: { slug: string; exif: ExifData; location: string }[];
 }
 
 export default function Photography({ allPhotos }: Props) {
   return (
     <>
       <Head>
-        <title>Experience - Sam Swanke</title>
+        <title>Photography - Sam Swanke</title>
         <meta
           name="description"
           content="Sam Swanke is a software engineer at Amazon and hobby photographer, working in NYC."
@@ -93,6 +107,9 @@ export default function Photography({ allPhotos }: Props) {
             {allPhotos.map((photo) => (
               <A key={photo.slug} href={`/images/photographs/${photo.slug}`}>
                 <ImgContainer>
+                  {(photo.location || photo.exif.exif.CreateDate) && (
+                    <TopText>{topText(photo.exif, photo.location)}</TopText>
+                  )}
                   <ImgPosition>
                     <Img
                       src={`/images/photographs/${photo.slug}`}
@@ -101,12 +118,7 @@ export default function Photography({ allPhotos }: Props) {
                     />
                   </ImgPosition>
                   {photo.exif.exif.CreateDate && (
-                    <ExifText>
-                      1/{1 / (photo.exif.exif.ExposureTime || 1)}s | f
-                      {photo.exif.exif.ApertureValue} |{" "}
-                      {photo.exif.exif.FocalLength}mm | {photo.exif.exif.ISO}{" "}
-                      ISO | {photo.exif.exif.LensModel}
-                    </ExifText>
+                    <ExifText>{exifText(photo.exif)}</ExifText>
                   )}
                 </ImgContainer>
               </A>
