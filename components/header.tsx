@@ -47,7 +47,10 @@ const Header = () => {
         <Link href="/blog" passHref>
           <NavItem>Blog</NavItem>
         </Link>
-        <NavItem href="https://skswanke.github.io/resume/resume.pdf" target="#">
+        <NavItem
+          href="https://raw.githubusercontent.com/skswanke/resume/master/resume.pdf"
+          target="blank"
+        >
           Resume
         </NavItem>
         <A href="https://github.com/skswanke" target="#">
