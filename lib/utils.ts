@@ -29,7 +29,7 @@ export const topText = (exif: ExifData, location: string): string => {
 export const exifText = (exif: ExifData): string => {
   return [
     exif.exif.ExposureTime && `1/${1 / (exif.exif.ExposureTime || 1)}s`,
-    exif.exif.ApertureValue && `f${exif.exif.ApertureValue}`,
+    exif.exif.ApertureValue && `f${exif.exif.ApertureValue.toPrecision(2)}`,
     exif.exif.FocalLength && `${exif.exif.FocalLength}mm`,
     exif.exif.ISO && `ISO ${exif.exif.ISO}`,
     exif.exif.LensModel,
