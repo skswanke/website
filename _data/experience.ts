@@ -2,7 +2,7 @@ const data = [
   {
     company: "Amazon",
     title: "SDM",
-    dates: "Aug 2021 - Present",
+    dates: "May 2022 - Present",
     location: "New York, NY",
     description: "The worlds most customer-centric company.",
     link: "https://amazon.com",
@@ -10,7 +10,7 @@ const data = [
   {
     company: "Amazon",
     title: "SDE II",
-    dates: "Aug 2021 - Present",
+    dates: "Aug 2021 - May 2022",
     location: "New York, NY",
     description: "The worlds most customer-centric company.",
     link: "https://amazon.com",
