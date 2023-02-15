@@ -34,6 +34,10 @@ const ExifText = styled.small`
   transform: translateY(30px);
   width: 100%;
   transition: transform 200ms ease-in-out;
+  @media (prefers-color-scheme: dark) {
+    background-color: #000000;
+    color: #ffffff;
+  }
 `;
 const TopText = styled.small`
   background-color: #ffffff;
@@ -44,6 +48,10 @@ const TopText = styled.small`
   width: 100%;
   transition: transform 200ms ease-in-out;
   z-index: 1;
+  @media (prefers-color-scheme: dark) {
+    background-color: #000000;
+    color: #ffffff;
+  }
 `;
 const ImgContainer = styled.div`
   position: relative;
