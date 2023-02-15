@@ -29,6 +29,14 @@ body {
   letter-spacing: 0.1px;
 }
 
+@media (prefers-color-scheme: dark) {
+  html,
+  body {
+    color: white;
+    background-color: black;
+  }
+}
+
 a {
   color: inherit;
   text-decoration: none;

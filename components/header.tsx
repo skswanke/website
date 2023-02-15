@@ -2,7 +2,7 @@ import Link from "next/link";
 import React from "react";
 import styled from "styled-components";
 import Github from "../icons/github";
-import { HOVER_BG } from "../lib/colors";
+import { HOVER_BG, HOVER_BG_DARK } from "../lib/colors";
 
 const HeaderContainer = styled.header`
   display: flex;
@@ -21,6 +21,11 @@ const NavItem = styled.a`
   :hover {
     background-color: ${HOVER_BG};
   }
+@media (prefers-color-scheme: dark) {
+  :hover {
+    background-color: ${HOVER_BG_DARK};
+  }
+}
 `;
 const A = styled.a`
   display: flex;

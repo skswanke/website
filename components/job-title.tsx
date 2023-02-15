@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { SECONDARY_TEXT } from "../lib/colors";
+import { SECONDARY_TEXT, SECONDARY_TEXT_DARK } from "../lib/colors";
 
 const H2 = styled.h2`
   margin: 0;
@@ -7,6 +7,9 @@ const H2 = styled.h2`
 const H3 = styled.h3`
   margin: 0;
   color: ${SECONDARY_TEXT};
+  @media (prefers-color-scheme: dark) {
+    color: ${SECONDARY_TEXT_DARK};
+  }
 `;
 const Container = styled.div`
   display: flex;
