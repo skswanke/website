@@ -7,7 +7,7 @@ export const exifDateToDate = (exif: string): Date => {
   const [hh, m, ss] = timeString.split(":");
   return new Date(
     parseInt(yy),
-    parseInt(mm),
+    parseInt(mm - 1),
     parseInt(dd),
     parseInt(hh),
     parseInt(m),
@@ -18,7 +18,7 @@ export const exifDateToDate = (exif: string): Date => {
 export const topText = (exif: ExifData, location: string): string => {
   const dateString = format(
     exifDateToDate(exif.exif.CreateDate || ""),
-    "LLL	d, yy"
+    "PPP"
   );
   if (location) {
     return `${dateString} | ${location}`;
