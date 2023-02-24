@@ -7,7 +7,7 @@ export const exifDateToDate = (exif: string): Date => {
   const [hh, m, ss] = timeString.split(":");
   return new Date(
     parseInt(yy),
-    parseInt(mm - 1),
+    parseInt(mm) - 1,
     parseInt(dd),
     parseInt(hh),
     parseInt(m),
