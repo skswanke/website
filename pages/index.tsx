@@ -1,6 +1,22 @@
 import Head from "next/head";
-import { Article, Main } from "../components";
+import styled from "styled-components";
+import { Article, Main, P } from "../components";
 import Header from "../components/header";
+
+const BG = styled.div`
+  background-image: url(/images/photographs/dumbo-light.jpg);
+  @media (prefers-color-scheme: dark) {
+    background-image: url(/images/photographs/dumbo.jpg);
+  }
+  background-position: center;
+  background-size: cover;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+`;
 
 export default function Home() {
   return (
@@ -14,12 +30,9 @@ export default function Home() {
         <link rel="icon" href="/icon.png" />
       </Head>
 
-      <Header />
-      <Main>
-        <Article>
-          <h2>Developer at large</h2>
-        </Article>
-      </Main>
+      <BG>
+        <Header />
+      </BG>
     </>
   );
 }
