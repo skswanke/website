@@ -3,7 +3,7 @@ import Header from "../../components/header";
 import { Article, Main } from "../../components";
 import projects from "../../_data/open-source";
 import styled from "styled-components";
-import { HOVER_BG } from "../../lib/colors";
+import { HOVER_BG, HOVER_BG_DARK } from "../../lib/colors";
 
 const Img = styled.img`
   width: 40px;
@@ -25,6 +25,11 @@ const A = styled.a`
   border-radius: 4px;
   :hover {
     background-color: ${HOVER_BG};
+  }
+  @media (prefers-color-scheme: dark) {
+    :hover {
+      background-color: ${HOVER_BG_DARK};
+    }
   }
   padding: 0 16px;
 `;

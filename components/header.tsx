@@ -21,11 +21,11 @@ const NavItem = styled.a`
   :hover {
     background-color: ${HOVER_BG};
   }
-@media (prefers-color-scheme: dark) {
-  :hover {
-    background-color: ${HOVER_BG_DARK};
+  @media (prefers-color-scheme: dark) {
+    :hover {
+      background-color: ${HOVER_BG_DARK};
+    }
   }
-}
 `;
 const A = styled.a`
   display: flex;
