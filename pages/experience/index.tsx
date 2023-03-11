@@ -4,11 +4,15 @@ import { Article, Main } from "../../components";
 import jobs from "../../_data/experience";
 import JobTitle from "../../components/job-title";
 import styled from "styled-components";
+import useIsMobile, { MOBILE_CUTOFF } from "../../lib/use-is-mobile";
 
-const FlexContainer = styled.div`
+const FlexContainer = styled.div<{ isMobile: boolean }>`
   display: flex;
   justify-content: space-between;
   align-items: baseline;
+  @media screen and (max-width: ${MOBILE_CUTOFF}px) {
+    flex-direction: column;
+  }
 `;
 
 const P = styled.p`
@@ -16,6 +20,8 @@ const P = styled.p`
 `;
 
 export default function Experience() {
+  const isMobile = useIsMobile();
+
   return (
     <>
       <Head>
@@ -32,7 +38,7 @@ export default function Experience() {
         <Article>
           {jobs.map((job) => (
             <section key={job.company + job.title}>
-              <FlexContainer>
+              <FlexContainer isMobile={isMobile}>
                 <JobTitle company={job.company} title={job.title} />
                 <small>
                   {job.dates} | {job.location}

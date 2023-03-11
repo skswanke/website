@@ -24,6 +24,7 @@ const MDContainer = styled.div`
     max-height: 500px;
     margin-left: 50%;
     transform: translateX(-50%);
+    width: 100%;
   }
 `;
 

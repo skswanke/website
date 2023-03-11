@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { SECONDARY_TEXT, SECONDARY_TEXT_DARK } from "../lib/colors";
+import { MOBILE_CUTOFF } from "../lib/use-is-mobile";
 
 const H2 = styled.h2`
   margin: 0;
@@ -15,6 +16,9 @@ const Container = styled.div`
   display: flex;
   align-items: baseline;
   grid-gap: 8px;
+  @media screen and (max-width: ${MOBILE_CUTOFF}px) {
+    flex-direction: column;
+  }
 `;
 
 interface JobTitleProps {

@@ -1,6 +1,5 @@
 import Head from "next/head";
 import styled from "styled-components";
-import { Article, Main, P } from "../components";
 import Header from "../components/header";
 
 const BG = styled.div`

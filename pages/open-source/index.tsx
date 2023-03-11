@@ -31,7 +31,7 @@ const A = styled.a`
       background-color: ${HOVER_BG_DARK};
     }
   }
-  padding: 0 16px;
+  padding: 0;
 `;
 
 export default function Experience() {

@@ -1,13 +1,19 @@
 import styled from "styled-components";
+import { MOBILE_CUTOFF } from "../lib/use-is-mobile";
 
 export const Main = styled.main`
   display: flex;
   margin: 0 32px 64px;
   padding: 0 32px;
+  @media screen and (max-width: ${MOBILE_CUTOFF}px) {
+    margin: 0 16px 32px;
+    padding: 0 16px;
+  }
 `;
 
 export const Article = styled.article`
   max-width: 840px;
+  min-width: 0;
 `;
 
 export const A = styled.a`

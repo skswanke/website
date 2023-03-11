@@ -6,6 +6,7 @@ import { Article, H1, Main } from "../../components";
 import Header from "../../components/header";
 import { getPhotos } from "../../lib/api";
 import { exifText, topText } from "../../lib/utils";
+import { MOBILE_CUTOFF } from "../../lib/use-is-mobile";
 
 const Grid = styled.div`
   display: grid;
@@ -38,6 +39,9 @@ const ExifText = styled.small`
     background-color: #000000;
     color: #ffffff;
   }
+  @media screen and (max-width: ${MOBILE_CUTOFF}px) {
+    display: none;
+  }
 `;
 const TopText = styled.small`
   background-color: #ffffff;
@@ -52,12 +56,16 @@ const TopText = styled.small`
     background-color: #000000;
     color: #ffffff;
   }
+  @media screen and (max-width: ${MOBILE_CUTOFF}px) {
+    display: none;
+  }
 `;
 const ImgContainer = styled.div`
   position: relative;
   width: 100%;
   padding-bottom: 66.66666%;
   overflow: hidden;
+
   :hover {
     ${ExifText} {
       transform: none;
@@ -66,6 +74,7 @@ const ImgContainer = styled.div`
       transform: none;
     }
   }
+
   @media only screen and (max-width: 700px) {
     padding-bottom: 100%;
   }
