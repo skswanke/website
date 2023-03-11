@@ -1,7 +1,7 @@
 import Link from "next/link";
 import styled from "styled-components";
 import Github from "../icons/github";
-import { HOVER_BG, HOVER_BG_DARK } from "../lib/colors";
+import { BG, BG_DARK, HOVER_BG, HOVER_BG_DARK } from "../lib/colors";
 
 const Background = styled.div`
   z-index: 999;
@@ -12,11 +12,14 @@ const Background = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: #ffffff;
+  background-color: ${BG};
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  @media (prefers-color-scheme: dark) {
+      background-color: ${BG_DARK};
+  }
 `;
 const NavContainer = styled.nav`
   display: flex;

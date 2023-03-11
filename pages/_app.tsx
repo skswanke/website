@@ -1,5 +1,6 @@
 import { ComponentClass, FunctionComponent } from "react";
 import { createGlobalStyle } from "styled-components";
+import { BG_DARK, PRIMARY_TEXT_DARK } from "../lib/colors";
 
 const GlobalStyles = createGlobalStyle`
 @font-face {
@@ -32,8 +33,8 @@ body {
 @media (prefers-color-scheme: dark) {
   html,
   body {
-    color: white;
-    background-color: black;
+    color: ${PRIMARY_TEXT_DARK};
+    background-color: ${BG_DARK};
   }
 }
 
