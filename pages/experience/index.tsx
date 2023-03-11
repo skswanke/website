@@ -1,9 +1,10 @@
-import Head from "next/head";
+import styled from "styled-components";
+
+import Head from "../../components/head";
 import Header from "../../components/header";
 import { Article, Main } from "../../components";
 import jobs from "../../_data/experience";
 import JobTitle from "../../components/job-title";
-import styled from "styled-components";
 import useIsMobile, { MOBILE_CUTOFF } from "../../lib/use-is-mobile";
 
 const FlexContainer = styled.div<{ isMobile: boolean }>`
@@ -24,14 +25,7 @@ export default function Experience() {
 
   return (
     <>
-      <Head>
-        <title>Experience - Sam Swanke</title>
-        <meta
-          name="description"
-          content="Sam Swanke is a software engineer at Amazon and hobby photographer, working in NYC."
-        />
-      </Head>
-
+      <Head title="Experience - Sam Swanke" />
       <Header />
 
       <Main>

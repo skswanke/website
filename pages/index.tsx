@@ -1,5 +1,5 @@
-import Head from "next/head";
 import styled from "styled-components";
+import Head from "../components/head";
 import Header from "../components/header";
 
 const BG = styled.div`
@@ -20,14 +20,7 @@ const BG = styled.div`
 export default function Home() {
   return (
     <>
-      <Head>
-        <title>Sam Swanke - Software Engineer</title>
-        <meta
-          name="description"
-          content="Sam Swanke is a software engineer at Amazon and hobby photographer, working in NYC."
-        />
-        <link rel="icon" href="/icon.png" />
-      </Head>
+      <Head title="Sam Swanke - Software Engineer" />
 
       <BG>
         <Header />

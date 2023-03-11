@@ -1,8 +1,9 @@
-import Head from "next/head";
+import styled from "styled-components";
+
+import Head from "../../components/head";
 import Header from "../../components/header";
 import { Article, Main } from "../../components";
 import projects from "../../_data/open-source";
-import styled from "styled-components";
 import { HOVER_BG, HOVER_BG_DARK } from "../../lib/colors";
 
 const Img = styled.img`
@@ -38,14 +39,7 @@ const A = styled.a`
 export default function Experience() {
   return (
     <>
-      <Head>
-        <title>Open Source - Sam Swanke</title>
-        <meta
-          name="description"
-          content="Sam Swanke is a software engineer at Amazon and hobby photographer, working in NYC."
-        />
-      </Head>
-
+      <Head title="Open Source - Sam Swanke" />
       <Header />
 
       <Main>

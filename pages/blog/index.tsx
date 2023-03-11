@@ -1,8 +1,8 @@
-import Head from "next/head";
 import styled from "styled-components";
 import Link from "next/link";
 import { parseISO, format } from "date-fns";
 
+import Head from "../../components/head";
 import { getAllPosts } from "../../lib/api";
 import { Post } from "../../lib/types";
 import Header from "../../components/header";
@@ -44,9 +44,7 @@ interface Props {
 export default function Index({ allPosts }: Props) {
   return (
     <>
-      <Head>
-        <title>Blog - Sam Swanke</title>
-      </Head>
+      <Head title="Blog - Sam Swanke" />
       <Header />
       <Main>
         <UL>

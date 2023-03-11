@@ -1,13 +1,14 @@
 import { useRouter } from "next/router";
 import ErrorPage from "next/error";
+import styled from "styled-components";
+import { parseISO, format } from "date-fns";
+
 import { getPostBySlug, getAllPosts } from "../../lib/api";
-import Head from "next/head";
+import Head from "../../components/head";
 import markdownToHtml from "../../lib/markdown-to-html";
 import Header from "../../components/header";
 import { Article, H1, Main } from "../../components";
-import { parseISO, format } from "date-fns";
 import { Post as IPost } from "../../lib/types";
-import styled from "styled-components";
 
 const MDContainer = styled.div`
   & h1 {
@@ -39,9 +40,7 @@ export default function Post({ post }: Props) {
   }
   return (
     <>
-      <Head>
-        <title>{post.title} | Sam Swanke Blog</title>
-      </Head>
+      <Head title={post.title || "Sam Swanke Blog"} />
       <Header />
 
       <Main>

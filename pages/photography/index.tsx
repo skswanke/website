@@ -1,7 +1,8 @@
-import Head from "next/head";
 import Image from "next/image";
 import styled from "styled-components";
 import { ExifData } from "exif";
+
+import Head from "../../components/head";
 import { Article, H1, Main } from "../../components";
 import Header from "../../components/header";
 import { getPhotos } from "../../lib/api";
@@ -105,14 +106,7 @@ interface Props {
 export default function Photography({ allPhotos }: Props) {
   return (
     <>
-      <Head>
-        <title>Photography - Sam Swanke</title>
-        <meta
-          name="description"
-          content="Sam Swanke is a software engineer at Amazon and hobby photographer, working in NYC."
-        />
-      </Head>
-
+      <Head title="Photography - Sam Swanke" />
       <Header />
 
       <Main>

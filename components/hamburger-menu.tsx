@@ -13,7 +13,8 @@ const Line = styled.div`
   @media (prefers-color-scheme: dark) {
     background-color: ${PRIMARY_TEXT_DARK};
   }
-  transition: all 200ms ease-in-out;
+  transition: transform 200ms ease-in-out;
+  transition: opacity 200ms ease-in-out;
   border-radius: 2px;
 `;
 const FirstLine = styled(Line)`
