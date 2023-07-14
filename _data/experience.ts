@@ -4,7 +4,8 @@ const data = [
     title: "SDM",
     dates: "May 2022 - Present",
     location: "New York, NY",
-    description: "The worlds most customer-centric company.",
+    description:
+      "Managed a diverse, high performing product team of 5 engineers within Amazon's Treasury department. Created product and engineering vision to meet business goals while not compromising on customer experience. Mentored junior team members and earned trust on the team, enabling a smooth transition to manager. Worked closely with two engineers giving frequent feedback to guide them to promotion. Led with empathy, settled conflicts within the team and created an inclusive and collaborative culture. Led the successful launch of two full scale internal products, Amazon Bridge and InsurGuide. Demonstrated the ability to make tough decisions to prioritize delivering a high-quality product that delights the customer while delivering on tight deadlines. Established team processes, and pushed for team development and innovation through training and hackathons. Created a culture of UX and user-centric driven development, fostering seamless user experiences and pushing for improved UX standards across an org that had no UX resources. Navigated shifting business priorities, delivering for customers, and maintaining high morale during large organizational changes. Collaborated with stakeholders, and built trust with customers, while encouraging team participation and collaborative learning.",
     link: "https://amazon.com",
   },
   {
@@ -12,7 +13,8 @@ const data = [
     title: "SDE II",
     dates: "Aug 2021 - May 2022",
     location: "New York, NY",
-    description: "The worlds most customer-centric company.",
+    description:
+      "Led in the design, implementation and deployment of the large-scale application, Amazon Bridge. Designed services using cutting edge AWS serverless architecture. Lead front-end development on the team, introducing code quality patterns such as typescript, redux and component design. Learned and established best practices for DynamoDB table design. Created critical step function workflows for the application. Earned trust on the team and became known for being a mentor and mediator, which opened the opportunity to take on management responsibility.",
     link: "https://amazon.com",
   },
   {
