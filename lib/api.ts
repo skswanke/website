@@ -43,16 +43,20 @@ const geocodePhoto = async (exif: ExifData): Promise<string> => {
   );
   console.log({ lat, long });
 
-  const gpsResponse = await fetch(
-    `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${long}`
-  );
+  try {
+    const gpsResponse = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${long}`
+    );
 
-  const gpsData = await gpsResponse.json();
-  console.log(gpsData);
+    const gpsData = await gpsResponse.json();
+    console.log(gpsData);
 
-  const address = [gpsData?.address?.city, gpsData?.address?.country];
+    const address = [gpsData?.address?.city, gpsData?.address?.country];
 
-  return address.join(", ");
+    return address.join(", ");
+  } catch (e) {
+    return "";
+  }
 };
 
 export async function getPhotos() {

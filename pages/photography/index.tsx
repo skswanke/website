@@ -33,7 +33,7 @@ const ExifText = styled.small`
   position: absolute;
   bottom: 0;
   left: 0;
-  transform: translateY(30px);
+  transform: translateY(60px);
   width: 100%;
   transition: transform 200ms ease-in-out;
   @media (prefers-color-scheme: dark) {
@@ -49,7 +49,7 @@ const TopText = styled.small`
   position: absolute;
   top: 0;
   left: 0;
-  transform: translateY(-30px);
+  transform: translateY(-60px);
   width: 100%;
   transition: transform 200ms ease-in-out;
   z-index: 1;
