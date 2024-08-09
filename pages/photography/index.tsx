@@ -112,7 +112,7 @@ export default function Photography({ allPhotos }: Props) {
       <Main>
         <div>
           <Article>
-            <H1>Photos n&rsquo; Stuff</H1>
+            <H1>Photography</H1>
           </Article>
           <Grid>
             {allPhotos.map((photo) => (
