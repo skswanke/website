@@ -32,7 +32,7 @@ export const exifText = (exif: ExifData): string => {
     exif.exif.ApertureValue && `f${exif.exif.ApertureValue.toPrecision(2)}`,
     exif.exif.FocalLength && `${exif.exif.FocalLength}mm`,
     exif.exif.ISO && `ISO ${exif.exif.ISO}`,
-    exif.exif.LensModel,
+    exif.exif.LensModel?.replace(/\(.*\)/, '').trim(),
   ]
     .filter((a) => a)
     .join(" | ");
