@@ -1,8 +1,16 @@
 const data = [
   {
+    company: "Hello Prenup",
+    title: "Chief Technology Officer",
+    dates: "December 2024 - present",
+    location: "New York, NY",
+    description: "",
+    link: "https://helloprenup.com",
+  },
+  {
     company: "Amazon",
     title: "SDM",
-    dates: "May 2022 - Present",
+    dates: "May 2022 - December 2024",
     location: "New York, NY",
     description:
       "As a Software Development Manager at Amazon, I lead a team of 5 Engineers, driving innovation and operational excellence in large-scale, complex AWS full-stack applications. I played a pivotal role in designing and implementing Amazon Bridge, an application supporting the Amazon Community Together program, automating workflows with AWS Step Functions, serverless infrastructure, and React-based front-end systems. Under my leadership, the application delivered critical features, scaled to support 750+ charities and 30,000+ annual cases, and enhanced user experience with intuitive, responsive UX standards. I transitioned seamlessly into the managerial role by earning trust through hands-on contributions, and mentorship. With over 400+ code reviews, driving unit test coverage from 5% to 40%, and reducing weekly on-call tickets by over 50%. I have successfully coached team members through promotions, championed design/code reviews, and implemented mechanisms to improve team growth and delivery quality. Additionally, I led the handover and successful launch of InsurGuide within 4 weeks, driving technical handoff, risk mitigation, and prioritization of mission-critical tasks, while ensuring production readiness through metrics and monitoring systems, InsurGuide saw the procurement of over nine figures in insurance contracts. My ability to manage ambiguity, influence technical and product strategies, and foster customer-centric solutions is shown by my experience delivering exceptional products and building high-performing engineering teams.",

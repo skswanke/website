@@ -8,7 +8,7 @@ interface Props {
 
 export default function Head({
   title,
-  description = "Sam Swanke is a software engineer at Amazon and hobby photographer, working in NYC.",
+  description = "Sam Swanke is the Chief Technology Officer of Hello Prenup, formerly a software manager and engineer at Amazon. Also a hobby photographer, working in NYC.",
 }: Props) {
   return (
     <NextHead>
