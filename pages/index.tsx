@@ -20,7 +20,7 @@ const BG = styled.div`
 export default function Home() {
   return (
     <>
-      <Head title="Sam Swanke - Software Engineer" />
+      <Head title="Sam Swanke - Software Engineering Leader" />
 
       <BG>
         <Header />
