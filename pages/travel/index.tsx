@@ -5,12 +5,16 @@ import Header from "../../components/header";
 import { BG, BG_DARK } from "../../lib/colors";
 import World from "./world";
 import { countries } from "../../_data/travel";
+import { MOBILE_CUTOFF } from "../../lib/use-is-mobile";
 
 const Container = styled.div`
   background-color: ${BG};
   padding: 0 64px;
   @media (prefers-color-scheme: dark) {
     background-color: ${BG_DARK};
+  }
+  @media screen and (max-width: ${MOBILE_CUTOFF}px) {
+    padding: 0 32px;
   }
 `;
 
@@ -34,6 +38,10 @@ const SVGContainer = styled.div`
             `& [name="${country}"], .${country} { fill:rgb(122, 177, 105); }`
         )
         .join("\n")}
+
+    @media (prefers-color-scheme: dark) {
+      fill:rgb(114, 114, 114);
+    }
   }
 `;
 
