@@ -10,4 +10,25 @@ export const countries = [
   "Sweden",
   "Norway",
   "Guatemala",
+  "Switzerland",
+  "Czech Republic",
+];
+
+export const wishList = [
+  "France",
+  "Japan",
+  "Australia",
+  "New.Zealand",
+  "United.Kingdom",
+  "Ireland",
+  "Luxembourg",
+  "Denmark",
+  "Brazil",
+  "Argentina",
+  "Chile",
+  "Peru",
+  "Vietnam",
+  "Thailand",
+  "Austria",
+  "Netherlands",
 ];
