@@ -1,4 +1,4 @@
-import { ComponentClass, FunctionComponent } from "react";
+import type { AppProps } from "next/app";
 import { createGlobalStyle } from "styled-components";
 import { BG_DARK, PRIMARY_TEXT_DARK } from "../lib/colors";
 
@@ -48,12 +48,7 @@ a {
 }
 `;
 
-interface Props<T> {
-  Component: ComponentClass | FunctionComponent;
-  pageProps: T;
-}
-
-function MyApp<T>({ Component, pageProps }: Props<T>) {
+function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <GlobalStyles />

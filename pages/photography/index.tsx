@@ -124,6 +124,7 @@ export default function Photography({ allPhotos }: Props) {
                   <ImgPosition>
                     <Img
                       src={`/images/photographs/${photo.slug}`}
+                      alt={photo.slug}
                       height={(photo.exif.exif.ExifImageHeight || 2000) / 5}
                       width={(photo.exif.exif.ExifImageWidth || 2000) / 5}
                     />

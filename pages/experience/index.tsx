@@ -41,7 +41,7 @@ export default function Experience() {
               </FlexContainer>
               <P
                 dangerouslySetInnerHTML={{
-                  __html: job.text || job.description,
+                  __html: job.description,
                 }}
               />
             </section>
