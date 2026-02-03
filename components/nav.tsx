@@ -54,16 +54,16 @@ export default function Nav({ handleClose }: Props) {
   return (
     <Background>
       <NavContainer>
-        <Link href="/experience" passHref>
+        <Link href="/experience" passHref legacyBehavior>
           <NavItem onClick={handleClose}>Experience</NavItem>
         </Link>
-        <Link href="/open-source" passHref>
+        <Link href="/open-source" passHref legacyBehavior>
           <NavItem onClick={handleClose}>Open Source</NavItem>
         </Link>
-        <Link href="/photography" passHref>
+        <Link href="/photography" passHref legacyBehavior>
           <NavItem onClick={handleClose}>Photography</NavItem>
         </Link>
-        <Link href="/blog" passHref>
+        <Link href="/blog" passHref legacyBehavior>
           <NavItem onClick={handleClose}>Blog</NavItem>
         </Link>
         <NavItem
