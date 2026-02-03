@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Head from "../../components/head";
 import Header from "../../components/header";
 import { Article, Main } from "../../components";
-import jobs from "../../_data/experience";
+import jobs, { summary } from "../../_data/experience";
 import JobTitle from "../../components/job-title";
 import useIsMobile, { MOBILE_CUTOFF } from "../../lib/use-is-mobile";
 
@@ -30,6 +30,7 @@ export default function Experience() {
 
       <Main>
         <Article>
+          <P>{summary}</P>
           {jobs.map((job) => (
             <section key={job.company + job.title}>
               <FlexContainer isMobile={isMobile}>
@@ -38,7 +39,11 @@ export default function Experience() {
                   {job.dates} | {job.location}
                 </small>
               </FlexContainer>
-              <P>{job.text || job.description}</P>
+              <P
+                dangerouslySetInnerHTML={{
+                  __html: job.text || job.description,
+                }}
+              />
             </section>
           ))}
         </Article>
