@@ -1,5 +1,5 @@
 export const summary =
-  "Engineering leader with Amazon and startup CTO experience. At Amazon, delivered platforms enabling nine-figure insurance contracts and supporting hundreds of nonprofit partners processing tens of thousands of annual cases. As CTO, led a zero-downtime AWS migration while contributing significant code - dramatically improving API performance and operational stability. Deeply invested in growing engineers: coached multiple promotions at Amazon, developed a non-technical hire into an effective engineer, and retained the entire team through a demanding rebuild. Combines distributed systems depth with a leadership style that elevates people and ships results.";
+  "Engineering leader with Amazon and startup CTO experience. At Amazon, delivered platforms enabling nine-figure insurance contracts and supporting hundreds of nonprofit partners processing tens of thousands of annual cases. As CTO, led a zero-downtime AWS replatform while contributing significant code - dramatically improving API performance and operational stability. Deeply invested in growing engineers: coached multiple promotions at Amazon, developed a non-technical hire into an effective engineer, and retained the entire team through a demanding rebuild. Combines distributed systems depth with a leadership style that elevates people and ships results.";
 
 const data = [
   {
