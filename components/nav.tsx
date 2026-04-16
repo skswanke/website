@@ -73,7 +73,7 @@ export default function Nav({ handleClose }: Props) {
         >
           Resume
         </NavItem>
-        <A onClick={handleClose} href="https://github.com/skswanke" target="#">
+        <A onClick={handleClose} href="https://github.com/skswanke" aria-label="Github Profile" target="#">
           <Github />
         </A>
       </NavContainer>
