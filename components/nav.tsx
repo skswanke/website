@@ -18,7 +18,7 @@ const Background = styled.div`
   align-items: center;
   justify-content: center;
   @media (prefers-color-scheme: dark) {
-      background-color: ${BG_DARK};
+    background-color: ${BG_DARK};
   }
 `;
 const NavContainer = styled.nav`
@@ -66,6 +66,9 @@ export default function Nav({ handleClose }: Props) {
         <Link href="/blog" passHref legacyBehavior>
           <NavItem onClick={handleClose}>Blog</NavItem>
         </Link>
+        <Link href="/travel" passHref legacyBehavior>
+          <NavItem onClick={handleClose}>Travel</NavItem>
+        </Link>
         <NavItem
           onClick={handleClose}
           href="https://raw.githubusercontent.com/skswanke/resume/master/resume.pdf"
@@ -73,7 +76,12 @@ export default function Nav({ handleClose }: Props) {
         >
           Resume
         </NavItem>
-        <A onClick={handleClose} href="https://github.com/skswanke" aria-label="Github Profile" target="#">
+        <A
+          onClick={handleClose}
+          href="https://github.com/skswanke"
+          aria-label="Github Profile"
+          target="#"
+        >
           <Github />
         </A>
       </NavContainer>
