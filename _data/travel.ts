@@ -31,4 +31,7 @@ export const wishList = [
   "Thailand",
   "Austria",
   "Netherlands",
+  "Greece",
+  "Morocco",
+  "Nepal"
 ];
