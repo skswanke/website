@@ -64,6 +64,9 @@ const Header = () => {
           <Link href="/blog" passHref legacyBehavior>
             <NavItem>Blog</NavItem>
           </Link>
+          <Link href="/travel" passHref legacyBehavior>
+            <NavItem>Travel</NavItem>
+          </Link>
           <NavItem
             href="https://raw.githubusercontent.com/skswanke/resume/master/resume.pdf"
             target="blank"

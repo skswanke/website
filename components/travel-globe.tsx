@@ -6,6 +6,7 @@ import countriesTopology from "world-atlas/countries-50m.json";
 import {
   countries,
   homeState,
+  pins as pinCoordinates,
   states as visitedStateData,
   stateWishList,
   wishList,
@@ -40,6 +41,11 @@ type LineGeometry = {
   coordinates: Coordinate[] | Coordinate[][];
 };
 
+type TextureSize = {
+  height: number;
+  width: number;
+};
+
 const countriesData = countriesTopology as any;
 const statesData = statesTopology as any;
 
@@ -65,9 +71,15 @@ const stateBorders = mesh(
   (a, b) => a !== b
 ) as unknown as LineGeometry;
 
-const TEXTURE_WIDTH = 4096;
-const TEXTURE_HEIGHT = 2048;
+const TEXTURE_WIDTH = 8000;
+const TEXTURE_HEIGHT = 8000;
 const GLOBE_RADIUS = 2.18;
+const PIN_HEAD_COLOR = "#d43f3a";
+const PIN_STEM_COLOR = "#111111";
+const PIN_SCALE = 0.1;
+const PIN_SURFACE_INSET = 0.002;
+const MIN_CAMERA_DISTANCE = 4.2;
+const MAX_CAMERA_DISTANCE = 20;
 
 const countryAliases: Record<string, string> = {
   "Czech Republic": "Czechia",
@@ -81,17 +93,18 @@ const wishListStates = new Set(stateWishList.map(normalizeStateName));
 
 const themes = {
   light: {
-    ocean: "#d8eef3",
+    ocean: "#376ea7",
     land: "#ece7dd",
-    border: "rgba(78, 95, 99, 0.62)",
-    home: "#7dafc8",
+    // border: "rgba(78, 95, 99, 0.62)",
+    border: "rgba(0, 0, 0, 1)",
+    home: "#efcc78",
     visited: "#7ab169",
     wishList: "#b16969",
     glow: "#8ec5d6",
     page: "#ffffff",
   },
   dark: {
-    ocean: "#071921",
+    ocean: "#376ea7",
     land: "#2e3430",
     border: "rgba(206, 226, 225, 0.42)",
     home: "#5a9cbb",
@@ -147,29 +160,37 @@ function getStateFill(stateName: string | undefined, darkMode: boolean) {
   return theme.land;
 }
 
-function projectCoordinate([longitude, latitude]: Coordinate) {
+function projectCoordinate(
+  [longitude, latitude]: Coordinate,
+  textureSize: TextureSize
+) {
   return {
-    x: ((longitude + 180) / 360) * TEXTURE_WIDTH,
-    y: ((90 - latitude) / 180) * TEXTURE_HEIGHT,
+    x: ((longitude + 180) / 360) * textureSize.width,
+    y: ((90 - latitude) / 180) * textureSize.height,
   };
 }
 
-function unwrapCoordinates(coordinates: Coordinate[]) {
+function unwrapCoordinates(
+  coordinates: Coordinate[],
+  textureSize: TextureSize
+) {
   if (coordinates.length === 0) {
     return [];
   }
 
-  const points = coordinates.map(projectCoordinate);
+  const points = coordinates.map((coordinate) =>
+    projectCoordinate(coordinate, textureSize)
+  );
 
   for (let index = 1; index < points.length; index += 1) {
     const previousX = points[index - 1].x;
 
-    while (points[index].x - previousX > TEXTURE_WIDTH / 2) {
-      points[index].x -= TEXTURE_WIDTH;
+    while (points[index].x - previousX > textureSize.width / 2) {
+      points[index].x -= textureSize.width;
     }
 
-    while (previousX - points[index].x > TEXTURE_WIDTH / 2) {
-      points[index].x += TEXTURE_WIDTH;
+    while (previousX - points[index].x > textureSize.width / 2) {
+      points[index].x += textureSize.width;
     }
   }
 
@@ -179,9 +200,10 @@ function unwrapCoordinates(coordinates: Coordinate[]) {
 function addRingToPath(
   context: CanvasRenderingContext2D,
   ring: Coordinate[],
-  offset: number
+  offset: number,
+  textureSize: TextureSize
 ) {
-  const points = unwrapCoordinates(ring);
+  const points = unwrapCoordinates(ring, textureSize);
 
   if (points.length === 0) {
     return;
@@ -198,26 +220,28 @@ function addRingToPath(
 
 function addPolygonToPath(
   context: CanvasRenderingContext2D,
-  polygon: Coordinate[][]
+  polygon: Coordinate[][],
+  textureSize: TextureSize
 ) {
-  for (const offset of [-TEXTURE_WIDTH, 0, TEXTURE_WIDTH]) {
+  for (const offset of [-textureSize.width, 0, textureSize.width]) {
     for (const ring of polygon) {
-      addRingToPath(context, ring, offset);
+      addRingToPath(context, ring, offset, textureSize);
     }
   }
 }
 
 function addCountryToPath(
   context: CanvasRenderingContext2D,
-  geometry: PolygonGeometry | MultiPolygonGeometry
+  geometry: PolygonGeometry | MultiPolygonGeometry,
+  textureSize: TextureSize
 ) {
   if (geometry.type === "Polygon") {
-    addPolygonToPath(context, geometry.coordinates);
+    addPolygonToPath(context, geometry.coordinates, textureSize);
     return;
   }
 
   for (const polygon of geometry.coordinates) {
-    addPolygonToPath(context, polygon);
+    addPolygonToPath(context, polygon, textureSize);
   }
 }
 
@@ -233,7 +257,8 @@ function drawLineGeometry(
   context: CanvasRenderingContext2D,
   geometry: LineGeometry,
   color: string,
-  lineWidth: number
+  lineWidth: number,
+  textureSize: TextureSize
 ) {
   context.save();
   context.strokeStyle = color;
@@ -242,9 +267,9 @@ function drawLineGeometry(
   context.lineJoin = "round";
 
   for (const line of getLineStrings(geometry)) {
-    const points = unwrapCoordinates(line);
+    const points = unwrapCoordinates(line, textureSize);
 
-    for (const offset of [-TEXTURE_WIDTH, 0, TEXTURE_WIDTH]) {
+    for (const offset of [-textureSize.width, 0, textureSize.width]) {
       context.beginPath();
 
       points.forEach((point, index) => {
@@ -263,10 +288,20 @@ function drawLineGeometry(
   context.restore();
 }
 
-function createGlobeTextureCanvas(darkMode: boolean) {
+function getTextureSize(renderer: THREE.WebGLRenderer): TextureSize {
+  const maxTextureWidth = renderer.capabilities.maxTextureSize || TEXTURE_WIDTH;
+  const width = Math.min(TEXTURE_WIDTH, maxTextureWidth);
+
+  return {
+    height: Math.round(width * (TEXTURE_HEIGHT / TEXTURE_WIDTH)),
+    width,
+  };
+}
+
+function createGlobeTextureCanvas(darkMode: boolean, textureSize: TextureSize) {
   const canvas = document.createElement("canvas");
-  canvas.width = TEXTURE_WIDTH;
-  canvas.height = TEXTURE_HEIGHT;
+  canvas.width = textureSize.width;
+  canvas.height = textureSize.height;
 
   const context = canvas.getContext("2d");
 
@@ -277,7 +312,7 @@ function createGlobeTextureCanvas(darkMode: boolean) {
   const theme = getTheme(darkMode);
 
   context.fillStyle = theme.ocean;
-  context.fillRect(0, 0, TEXTURE_WIDTH, TEXTURE_HEIGHT);
+  context.fillRect(0, 0, textureSize.width, textureSize.height);
 
   for (const country of countryFeatures.features) {
     if (!country.geometry) {
@@ -285,7 +320,7 @@ function createGlobeTextureCanvas(darkMode: boolean) {
     }
 
     context.beginPath();
-    addCountryToPath(context, country.geometry);
+    addCountryToPath(context, country.geometry, textureSize);
     context.fillStyle = getCountryFill(country.properties?.name, darkMode);
     context.fill("evenodd");
   }
@@ -296,13 +331,13 @@ function createGlobeTextureCanvas(darkMode: boolean) {
     }
 
     context.beginPath();
-    addCountryToPath(context, state.geometry);
+    addCountryToPath(context, state.geometry, textureSize);
     context.fillStyle = getStateFill(state.properties?.name, darkMode);
     context.fill("evenodd");
   }
 
-  drawLineGeometry(context, countryBorders, theme.border, 1.4);
-  drawLineGeometry(context, stateBorders, theme.border, 1.4);
+  drawLineGeometry(context, countryBorders, theme.border, 1.5, textureSize);
+  drawLineGeometry(context, stateBorders, theme.border, 1, textureSize);
 
   return canvas;
 }
@@ -335,6 +370,75 @@ function getInitialGlobeCenterY(
   }
 
   return Math.min(height * 0.72, 246 + stageHeight / 2);
+}
+
+function getSphereNormal([latitude, longitude]: Coordinate) {
+  const longitudeRadians = THREE.MathUtils.degToRad(longitude);
+  const latitudeRadians = THREE.MathUtils.degToRad(latitude);
+  const latitudeRadius = Math.cos(latitudeRadians);
+
+  return new THREE.Vector3(
+    latitudeRadius * Math.cos(longitudeRadians),
+    Math.sin(latitudeRadians),
+    -latitudeRadius * Math.sin(longitudeRadians)
+  ).normalize();
+}
+
+function createLocationPin(coordinate: Coordinate) {
+  const surfaceNormal = getSphereNormal(coordinate);
+  const pinGroup = new THREE.Group();
+  const surfaceOffset = GLOBE_RADIUS - PIN_SURFACE_INSET;
+  const stemHeight = 0.32 * PIN_SCALE;
+  const headRadius = 0.072 * PIN_SCALE;
+
+  pinGroup.position.copy(surfaceNormal).multiplyScalar(surfaceOffset);
+  pinGroup.quaternion.setFromUnitVectors(
+    new THREE.Vector3(0, 1, 0),
+    surfaceNormal
+  );
+
+  const stemGeometry = new THREE.CylinderGeometry(
+    0.014 * PIN_SCALE,
+    0.02 * PIN_SCALE,
+    stemHeight,
+    18
+  );
+  const stemMaterial = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(PIN_STEM_COLOR),
+    roughness: 0.42,
+    metalness: 0,
+  });
+  const stem = new THREE.Mesh(stemGeometry, stemMaterial);
+  stem.position.y = stemHeight / 2;
+  pinGroup.add(stem);
+
+  const headGeometry = new THREE.SphereGeometry(headRadius, 28, 18);
+  const headMaterial = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(PIN_HEAD_COLOR),
+    emissive: new THREE.Color(PIN_HEAD_COLOR),
+    emissiveIntensity: 0.16,
+    roughness: 0.36,
+    metalness: 0,
+  });
+  const head = new THREE.Mesh(headGeometry, headMaterial);
+  head.position.y = stemHeight + headRadius * 0.7;
+  pinGroup.add(head);
+
+  const rimGeometry = new THREE.SphereGeometry(headRadius * 1.18, 28, 18);
+  const rimMaterial = new THREE.MeshBasicMaterial({
+    color: new THREE.Color(PIN_HEAD_COLOR),
+    transparent: true,
+    opacity: 0.22,
+  });
+  const rim = new THREE.Mesh(rimGeometry, rimMaterial);
+  rim.position.copy(head.position);
+  pinGroup.add(rim);
+
+  return {
+    group: pinGroup,
+    geometries: [stemGeometry, headGeometry, rimGeometry],
+    materials: [stemMaterial, headMaterial, rimMaterial],
+  };
 }
 
 function usePrefersDarkMode() {
@@ -379,13 +483,17 @@ export default function TravelGlobe() {
     });
     renderer.setClearColor(theme.page, 0);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.domElement.style.touchAction = "none";
     mount.appendChild(renderer.domElement);
 
     const globeGroup = new THREE.Group();
     globeGroup.rotation.set(0.42, 5.9, 0);
     scene.add(globeGroup);
 
-    const texture = new THREE.CanvasTexture(createGlobeTextureCanvas(darkMode));
+    const textureSize = getTextureSize(renderer);
+    const texture = new THREE.CanvasTexture(
+      createGlobeTextureCanvas(darkMode, textureSize)
+    );
     texture.colorSpace = THREE.SRGBColorSpace;
     texture.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
 
@@ -397,6 +505,11 @@ export default function TravelGlobe() {
     });
     const globe = new THREE.Mesh(globeGeometry, globeMaterial);
     globeGroup.add(globe);
+
+    const pins = pinCoordinates.map((coordinate) =>
+      createLocationPin(coordinate)
+    );
+    pins.forEach((pin) => globeGroup.add(pin.group));
 
     const atmosphereGeometry = new THREE.SphereGeometry(
       GLOBE_RADIUS * 1.012,
@@ -440,6 +553,9 @@ export default function TravelGlobe() {
     let velocityY = 0;
     let viewportWidth = 0;
     let viewportHeight = 0;
+    let pinchStartDistance = 0;
+    let pinchStartCameraZ = camera.position.z;
+    const activePointers = new Map<number, { x: number; y: number }>();
 
     const updateGlobeScreenPosition = () => {
       if (viewportWidth === 0 || viewportHeight === 0) {
@@ -482,6 +598,45 @@ export default function TravelGlobe() {
       renderer.setSize(width, height, false);
     };
 
+    const setCameraDistance = (distance: number) => {
+      camera.position.z = clamp(
+        distance,
+        MIN_CAMERA_DISTANCE,
+        MAX_CAMERA_DISTANCE
+      );
+      updateGlobeScreenPosition();
+      camera.updateProjectionMatrix();
+    };
+
+    const getPinchDistance = () => {
+      const pointers = Array.from(activePointers.values());
+
+      if (pointers.length < 2) {
+        return 0;
+      }
+
+      return Math.hypot(
+        pointers[0].x - pointers[1].x,
+        pointers[0].y - pointers[1].y
+      );
+    };
+
+    const beginPinch = () => {
+      pinchStartDistance = getPinchDistance();
+      pinchStartCameraZ = camera.position.z;
+      isDragging = false;
+      velocityX = 0;
+      velocityY = 0;
+    };
+
+    const beginDrag = (pointer: { x: number; y: number }) => {
+      isDragging = true;
+      lastPointerX = pointer.x;
+      lastPointerY = pointer.y;
+      velocityX = 0;
+      velocityY = 0;
+    };
+
     const resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(mount);
     resize();
@@ -507,15 +662,43 @@ export default function TravelGlobe() {
     };
 
     const handlePointerDown = (event: PointerEvent) => {
-      isDragging = true;
-      lastPointerX = event.clientX;
-      lastPointerY = event.clientY;
-      velocityX = 0;
-      velocityY = 0;
+      event.preventDefault();
+      activePointers.set(event.pointerId, {
+        x: event.clientX,
+        y: event.clientY,
+      });
       renderer.domElement.setPointerCapture(event.pointerId);
+
+      if (activePointers.size >= 2) {
+        beginPinch();
+        return;
+      }
+
+      beginDrag({ x: event.clientX, y: event.clientY });
     };
 
     const handlePointerMove = (event: PointerEvent) => {
+      event.preventDefault();
+
+      if (activePointers.has(event.pointerId)) {
+        activePointers.set(event.pointerId, {
+          x: event.clientX,
+          y: event.clientY,
+        });
+      }
+
+      if (activePointers.size >= 2) {
+        const pinchDistance = getPinchDistance();
+
+        if (pinchStartDistance > 0 && pinchDistance > 0) {
+          setCameraDistance(
+            pinchStartCameraZ * (pinchStartDistance / pinchDistance)
+          );
+        }
+
+        return;
+      }
+
       if (!isDragging) {
         return;
       }
@@ -536,22 +719,30 @@ export default function TravelGlobe() {
     };
 
     const handlePointerUp = (event: PointerEvent) => {
-      isDragging = false;
+      event.preventDefault();
+      activePointers.delete(event.pointerId);
 
       if (renderer.domElement.hasPointerCapture(event.pointerId)) {
         renderer.domElement.releasePointerCapture(event.pointerId);
       }
+
+      if (activePointers.size >= 2) {
+        beginPinch();
+        return;
+      }
+
+      if (activePointers.size === 1) {
+        const remainingPointer = Array.from(activePointers.values())[0];
+        beginDrag(remainingPointer);
+        return;
+      }
+
+      isDragging = false;
     };
 
     const handleWheel = (event: WheelEvent) => {
       event.preventDefault();
-      camera.position.z = clamp(
-        camera.position.z + event.deltaY * 0.004,
-        4.2,
-        20
-      );
-      updateGlobeScreenPosition();
-      camera.updateProjectionMatrix();
+      setCameraDistance(camera.position.z + event.deltaY * 0.004);
     };
 
     renderer.domElement.addEventListener("pointerdown", handlePointerDown);
@@ -576,6 +767,10 @@ export default function TravelGlobe() {
       texture.dispose();
       globeGeometry.dispose();
       globeMaterial.dispose();
+      pins.forEach((pin) => {
+        pin.geometries.forEach((geometry) => geometry.dispose());
+        pin.materials.forEach((material) => material.dispose());
+      });
       atmosphereGeometry.dispose();
       atmosphereMaterial.dispose();
       renderer.dispose();
