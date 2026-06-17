@@ -16,7 +16,11 @@
     "react-dom": "^18.2.0",
     "remark": "^14.0.2",
     "remark-html": "^15.0.1",
-    "styled-components": "^5.3.5"
+    "styled-components": "^5.3.5",
+    "three": "^0.184.0",
+    "topojson-client": "^3.1.0",
+    "us-atlas": "^3.0.1",
+    "world-atlas": "^2.0.2"
   },
   "devDependencies": {
     "@types/exif": "^0.6.3",
@@ -24,6 +28,8 @@
     "@types/react": "^18.3.24",
     "@types/react-dom": "^18.3.7",
     "@types/styled-components": "^5.1.25",
+    "@types/three": "^0.184.1",
+    "@types/topojson-client": "^3.1.5",
     "eslint": "^9.39.2",
     "eslint-config-next": "^16.1.6",
     "prettier": "^2.7.1"

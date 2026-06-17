@@ -14,12 +14,43 @@ export const countries = [
   "Czech Republic",
 ];
 
+export const states: string[] = [
+  "Vermont",
+  "New Hampshire",
+  "Maine",
+  "Massachusetts",
+  "Connecticut",
+  "Rhode Island",
+  "Pennsylvania",
+  "New Jersey",
+  "Maryland",
+  "Virginia",
+  "North Carolina",
+  "Georgia",
+  "Florida",
+  "Alabama",
+  "Kentucky",
+  "Mississippi",
+  "Louisiana",
+  "Illinois",
+  "Michigan",
+  "Wisconsin",
+  "Ohio",
+  "Arizona",
+  "Washington",
+  "California",
+  "Hawaii",
+  "Colorado"
+];
+
+export const homeState = "New York";
+
 export const wishList = [
   "France",
   "Japan",
   "Australia",
-  "New.Zealand",
-  "United.Kingdom",
+  "New Zealand",
+  "United Kingdom",
   "Ireland",
   "Luxembourg",
   "Denmark",
@@ -33,5 +64,15 @@ export const wishList = [
   "Netherlands",
   "Greece",
   "Morocco",
-  "Nepal"
+  "Nepal",
+  "Finland",
+  "Iceland"
+];
+
+export const stateWishList: string[] = [
+  "Wyoming",
+  "Texas",
+  "Oregon",
+  "Montana",
+  "Alaska"
 ];
