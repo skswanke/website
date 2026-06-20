@@ -73,6 +73,7 @@ const stateBorders = mesh(
 
 const TEXTURE_WIDTH = 8000;
 const TEXTURE_HEIGHT = 8000;
+const MOBILE_TEXTURE_WIDTH = 4096;
 const GLOBE_RADIUS = 2.18;
 const PIN_HEAD_COLOR = "#d43f3a";
 const PIN_STEM_COLOR = "#111111";
@@ -288,9 +289,19 @@ function drawLineGeometry(
   context.restore();
 }
 
+function prefersReducedTextureSize() {
+  return (
+    window.innerWidth <= MOBILE_CUTOFF ||
+    window.matchMedia("(pointer: coarse)").matches
+  );
+}
+
 function getTextureSize(renderer: THREE.WebGLRenderer): TextureSize {
-  const maxTextureWidth = renderer.capabilities.maxTextureSize || TEXTURE_WIDTH;
-  const width = Math.min(TEXTURE_WIDTH, maxTextureWidth);
+  const targetWidth = prefersReducedTextureSize()
+    ? MOBILE_TEXTURE_WIDTH
+    : TEXTURE_WIDTH;
+  const maxTextureWidth = renderer.capabilities.maxTextureSize || targetWidth;
+  const width = Math.min(targetWidth, maxTextureWidth);
 
   return {
     height: Math.round(width * (TEXTURE_HEIGHT / TEXTURE_WIDTH)),
@@ -340,6 +351,14 @@ function createGlobeTextureCanvas(darkMode: boolean, textureSize: TextureSize) {
   drawLineGeometry(context, stateBorders, theme.border, 1, textureSize);
 
   return canvas;
+}
+
+function getInitialDarkMode() {
+  if (typeof window === "undefined" || !window.matchMedia) {
+    return false;
+  }
+
+  return window.matchMedia("(prefers-color-scheme: dark)").matches;
 }
 
 function clamp(value: number, min: number, max: number) {
@@ -442,19 +461,26 @@ function createLocationPin(coordinate: Coordinate) {
 }
 
 function usePrefersDarkMode() {
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(getInitialDarkMode);
 
   useEffect(() => {
     const query = window.matchMedia("(prefers-color-scheme: dark)");
 
-    setDarkMode(query.matches);
+    setDarkMode((current) =>
+      current === query.matches ? current : query.matches
+    );
 
-    const handleChange = () => {
-      setDarkMode(query.matches);
+    const handleChange = (event: MediaQueryListEvent) => {
+      setDarkMode(event.matches);
     };
 
-    query.addEventListener("change", handleChange);
-    return () => query.removeEventListener("change", handleChange);
+    if (query.addEventListener) {
+      query.addEventListener("change", handleChange);
+      return () => query.removeEventListener("change", handleChange);
+    }
+
+    query.addListener(handleChange);
+    return () => query.removeListener(handleChange);
   }, []);
 
   return darkMode;
@@ -764,6 +790,7 @@ export default function TravelGlobe() {
       renderer.domElement.removeEventListener("pointercancel", handlePointerUp);
       renderer.domElement.removeEventListener("wheel", handleWheel);
       mount.removeChild(renderer.domElement);
+      const textureCanvas = texture.image as HTMLCanvasElement | undefined;
       texture.dispose();
       globeGeometry.dispose();
       globeMaterial.dispose();
@@ -774,6 +801,12 @@ export default function TravelGlobe() {
       atmosphereGeometry.dispose();
       atmosphereMaterial.dispose();
       renderer.dispose();
+      renderer.forceContextLoss();
+
+      if (textureCanvas) {
+        textureCanvas.width = 1;
+        textureCanvas.height = 1;
+      }
     };
   }, [darkMode]);
 
